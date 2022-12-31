@@ -17,12 +17,14 @@ class CreateRepaymentTable extends Migration
             $table->id('seq_id');
             $table->uuid('id');
             $table->uuid('loan_id')->index();
-            $table->decimal('loan_amount_paid',10,2);
-            $table->decimal('excess_amount_paid',10,2);
+            $table->uuid('user_id')->index();
+            $table->decimal('loan_amount_paid',10,2)->default(0);
+            $table->decimal('excess_amount_paid',10,2)->default(0);
             $table->enum('status',['PENDING','SUCCESS','FAILED'])->default('PENDING');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             //$table->foreign('loan_id')->references('id')->on('loans');
+            //$table->foreign('user_id')->references('id')->on('users');
         });
         DB::statement('ALTER TABLE repayments ALTER COLUMN id SET DEFAULT uuid_generate_v4();');
 

@@ -1,19 +1,18 @@
 <?php
 
-namespace Modules\Loans\Models;
+namespace Modules\Repayments\Models;
 
 use EloquentFilter\Filterable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Modules\Loans\Models\ScheduledLoanRepayments;
 
-class Loan extends Authenticatable
+class Repayment extends Authenticatable
 {
     use Filterable;
     protected $primaryKey = 'id';
     protected $keyType = 'string';
     public function modelFilter()
     {
-        return $this->provideFilter(\Modules\Loans\ModelFilters\LoanFilter::class);
+        return $this->provideFilter(\Modules\Repayments\ModelFilters\RepaymentFilter::class);
     }
 
     /**
@@ -22,10 +21,12 @@ class Loan extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'loan_amount_paid',
+        //'excess_amount_paid',
+        'payment_date',
+        'loan_id',
         'user_id',
-        'loan_date',
-        'amount',
-        'term'
+        'status'
     ];
 
     /**
@@ -45,12 +46,4 @@ class Loan extends Authenticatable
      */
     protected $casts = [
     ];
-
-    function scheduled_repayments() {
-        return $this->hasMany(ScheduledLoanRepayments::class, 'loan_id', 'id');
-    }
-
-    function first_scheduled_repayment() {
-        return $this->hasOne(ScheduledLoanRepayments::class, 'loan_id', 'id')->where('status','PENDING')->orderBy('payment_date');
-    }
 }

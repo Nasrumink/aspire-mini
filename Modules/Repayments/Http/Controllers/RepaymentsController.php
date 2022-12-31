@@ -5,16 +5,18 @@ namespace Modules\Repayments\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-
+use Modules\Repayments\Services\RepaymentService;
+use Modules\Repayments\Http\Requests\RepaymentRequest;
 class RepaymentsController extends Controller
 {
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('repayments::index');
+        $repayment =  (new RepaymentService)->getRepaymentsByRole($request->all());
+        return response()->json(["error" => false, "message" => "Success", "data" => $repayment], 200);
     }
 
     /**
@@ -31,9 +33,14 @@ class RepaymentsController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(Request $request)
+    public function store(RepaymentRequest $request)
     {
-        //
+        $repayment =  (new RepaymentService)->createRepayment($request->all());
+        return response()->json([
+            'error' => false,
+            'message' => 'Repayment Created Successfully',
+            'data' => $repayment
+        ], 200);
     }
 
     /**

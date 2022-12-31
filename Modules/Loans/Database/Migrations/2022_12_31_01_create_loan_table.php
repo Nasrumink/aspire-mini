@@ -17,7 +17,7 @@ class CreateLoanTable extends Migration
             $table->id('seq_id');
             $table->uuid('id');
             $table->uuid('user_id')->index();
-            $table->decimal('amount',10,2);
+            $table->decimal('amount',10,2)->default(0);
             $table->integer('term');
             $table->timestamp('loan_date');
             $table->enum('repayment_frequency',['WEEKLY','MONTHLY'])->default('WEEKLY');
@@ -32,7 +32,7 @@ class CreateLoanTable extends Migration
             $table->id('seq_id');
             $table->uuid('id');
             $table->uuid('loan_id')->index();
-            $table->decimal('amount',10,2);
+            $table->decimal('amount',10,2)->default(0);
             $table->timestamp('payment_date');
             $table->enum('status',['PENDING','PAID'])->default('PENDING');
             $table->timestamp('created_at')->useCurrent();
