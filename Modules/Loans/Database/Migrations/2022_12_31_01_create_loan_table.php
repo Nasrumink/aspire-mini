@@ -48,6 +48,7 @@ class CreateLoanTable extends Migration
     public function down()
     {
         Schema::dropIfExists('loans');
+        Schema::dropIfExists('scheduled_loan_repayments');
     }
 }
 

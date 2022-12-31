@@ -1,4 +1,5 @@
 {
     "Users": true,
-    "Loans": true
+    "Loans": true,
+    "Repayments": true
 }
