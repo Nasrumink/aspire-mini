@@ -8,7 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class ScheduledLoanRepayments extends Authenticatable
 {
     use Filterable;
-
+    protected $primaryKey = 'id';
+    protected $keyType = 'string';
     public function modelFilter()
     {
        // return $this->provideFilter(\Modules\Loans\ModelFilters\LoanFilter::class);
@@ -21,7 +22,6 @@ class ScheduledLoanRepayments extends Authenticatable
      */
     protected $fillable = [
         'amount',
-        //'loan_id',
         'payment_date'
     ];
 

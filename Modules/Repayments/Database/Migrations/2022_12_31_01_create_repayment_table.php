@@ -14,8 +14,9 @@ class CreateRepaymentTable extends Migration
     public function up()
     {
         Schema::create('repayments', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('loan_id')->index();
+            $table->id('seq_id');
+            $table->uuid('id');
+            $table->uuid('loan_id')->index();
             $table->decimal('loan_amount_paid',10,2);
             $table->decimal('excess_amount_paid',10,2);
             $table->enum('status',['PENDING','SUCCESS','FAILED'])->default('PENDING');
@@ -23,6 +24,7 @@ class CreateRepaymentTable extends Migration
             $table->timestamp('updated_at')->useCurrent();
             //$table->foreign('loan_id')->references('id')->on('loans');
         });
+        DB::statement('ALTER TABLE repayments ALTER COLUMN id SET DEFAULT uuid_generate_v4();');
 
     }
 

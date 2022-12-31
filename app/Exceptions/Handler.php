@@ -37,6 +37,13 @@ class Handler extends ExceptionHandler
     {
         $this->renderable(function (Exception $e, $request) {
 
+            if($e instanceof \Illuminate\Database\QueryException) {
+                return response()->json([
+                    'error' => true,
+                    'message' => $e->errorInfo[count($e->errorInfo) - 1]
+                ], 404);
+            }
+
             //Error handling for all non validation Exceptions
             if(!$e instanceof \Illuminate\Validation\ValidationException && $e->getMessage() != '') {
                 return response()->json([

@@ -38,7 +38,6 @@ class LoanRequest extends FormRequest
                 'amount' => 'required|nullable|regex:/^\d+(\.\d{1,2})?$/|gt:1',
                 'term' => 'required|numeric',
                 'loan_date' => 'required|date',
-                'loan_number' => 'required', //|unique_with:loans,user_id
                 'scheduled_repayments' => 'required|array|min:3|max:3',
                 'scheduled_repayments.*.amount' => 'required|nullable|regex:/^\d+(\.\d{1,2})?$/|gt:1',
                 'scheduled_repayments.*.payment_date' => 'required|date',

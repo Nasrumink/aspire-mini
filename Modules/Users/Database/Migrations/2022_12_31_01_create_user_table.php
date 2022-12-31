@@ -13,8 +13,10 @@ class CreateUserTable extends Migration
      */
     public function up()
     {
+        DB::statement('CREATE EXTENSION IF NOT EXISTS"uuid-ossp"');
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
+            $table->id('seq_id');
+            $table->uuid('id');
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
@@ -25,6 +27,7 @@ class CreateUserTable extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });
+        DB::statement('ALTER TABLE users ALTER COLUMN id SET DEFAULT uuid_generate_v4();');
     }
 
     /**

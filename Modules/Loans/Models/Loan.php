@@ -9,7 +9,8 @@ use Modules\Loans\Models\ScheduledLoanRepayments;
 class Loan extends Authenticatable
 {
     use Filterable;
-
+    protected $primaryKey = 'id';
+    protected $keyType = 'string';
     public function modelFilter()
     {
         return $this->provideFilter(\Modules\Loans\ModelFilters\LoanFilter::class);
@@ -23,7 +24,6 @@ class Loan extends Authenticatable
     protected $fillable = [
         'user_id',
         'loan_date',
-        'loan_number',
         'amount',
         'term'
     ];

@@ -27,7 +27,6 @@ class LoanService
             $loan = Loan::create([
                 'user_id' => Auth::user()->id,
                 'loan_date' => $arr['loan_date'],
-                'loan_number' => $arr['loan_number'],
                 'amount' => $arr['amount'],
                 'term' => $arr['term']
             ]);

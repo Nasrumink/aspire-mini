@@ -14,9 +14,9 @@ class CreateLoanTable extends Migration
     public function up()
     {
         Schema::create('loans', function (Blueprint $table) {
-            $table->id();
-            $table->string('loan_number');
-            $table->bigInteger('user_id')->index();
+            $table->id('seq_id');
+            $table->uuid('id');
+            $table->uuid('user_id')->index();
             $table->decimal('amount',10,2);
             $table->integer('term');
             $table->timestamp('loan_date');
@@ -26,10 +26,12 @@ class CreateLoanTable extends Migration
             $table->timestamp('updated_at')->useCurrent();
             //$table->foreign('user_id')->references('id')->on('users');
         });
+        DB::statement('ALTER TABLE loans ALTER COLUMN id SET DEFAULT uuid_generate_v4();');
 
         Schema::create('scheduled_loan_repayments', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('loan_id')->index();
+            $table->id('seq_id');
+            $table->uuid('id');
+            $table->uuid('loan_id')->index();
             $table->decimal('amount',10,2);
             $table->timestamp('payment_date');
             $table->enum('status',['PENDING','PAID'])->default('PENDING');
@@ -37,6 +39,7 @@ class CreateLoanTable extends Migration
             $table->timestamp('updated_at')->useCurrent();
             //$table->foreign('loan_id')->references('id')->on('loans');
         });
+        DB::statement('ALTER TABLE scheduled_loan_repayments ALTER COLUMN id SET DEFAULT uuid_generate_v4();');
         
     }
 
