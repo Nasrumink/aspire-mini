@@ -28,7 +28,7 @@ class UsersController extends Controller
      * @return Renderable
      */
     public function store(UserRequest $request) {
-        $user =  (new UserService)->createOrUpdateUser($request->all());
+        $user =  (new UserService)->createUser($request->all());
 
         return response()->json([
             'error' => false,
@@ -44,7 +44,7 @@ class UsersController extends Controller
      * @return Renderable
      */
     public function update(User $user,UserRequest $request) {
-        $user =  (new UserService)->createOrUpdateUser($request->all(), $user);
+        $user =  (new UserService)->updateUser($request->all(), $user);
 
         return response()->json([
             'error' => false,

@@ -44,7 +44,6 @@ class UserRequest extends FormRequest
             return [
                 'first_name' => 'nullable',
                 'last_name' => 'nullable',
-                'email' => 'nullable|exists:users,email',
                 'role' => 'nullable|in:ADMIN,CUSTOMER'
             ];
         }
