@@ -8,26 +8,35 @@ use Modules\Users\Enums\Roles;
 
 class LoanService
 {
-    function getUsersByRole(array $arr) {
-        $user = new User();
+    function getLoansByRole(array $arr) {
+        $loan = new Loan();
 
-        if (Auth::user()->role == Roles::CUSTOMER) //Fetch user details of logged in user if the role is not admin
-            $user = $user->where('id', Auth::user()->id);
+        if (Auth::user()->role == Roles::CUSTOMER) //Fetch loan details of logged in user if the role is not admin
+            $loan = $loan->where('user_id', Auth::user()->id);
     
-        return $user->filter($arr)->get();
+        $loan = $loan->filter($arr)->get();
+
+        if (count($loan) < 1)
+            throw new \Exception('No records found');
+        return $loan;
     }
 
-    function createOrUpdateLoan(array $arr, $loan = '') {
-        if (empty($loan))
-            $loan = new Loan();
-        
-        $loan->loan_date = empty($loan->user_id) ? now() : $loan->user_id;   
-        $loan->user_id = empty($loan->user_id) ? Auth::user()->id : $loan->user_id;
-        $loan->amount = isset($arr['amount']) ? $arr['amount'] : $loan->amount;
-        $loan->term = isset($arr['term']) ? $arr['term'] : $loan->term;
-        $loan->repayment_frequency = isset($arr['repayment_frequency']) ? $arr['repayment_frequency'] : $loan->repayment_frequency;
-        $loan->save();
+    function createLoan(array $arr) : Loan {
+        return Loan::create([
+            'user_id' => Auth::user()->id,
+            'loan_date' => $arr['loan_date'],
+            'loan_number' => $arr['loan_number'],
+            'amount' => $arr['amount'],
+            'term' => $arr['term']
+        ]);
+    }
 
+    function updateLoan(array $arr, Loan $loan) : Loan {
+        if ($loan->status != 'PENDING')
+            throw new \Exception('Loan status already updated');
+
+        $loan->status = isset($arr['status']) ? $arr['status'] : $loan->status;
+        $loan->save();
         return $loan;
     }
 

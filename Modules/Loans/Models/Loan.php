@@ -20,6 +20,11 @@ class Loan extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_id',
+        'loan_date',
+        'loan_number',
+        'amount',
+        'term'
     ];
 
     /**

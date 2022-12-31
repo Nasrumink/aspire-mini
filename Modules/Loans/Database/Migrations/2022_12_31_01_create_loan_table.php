@@ -15,11 +15,13 @@ class CreateLoanTable extends Migration
     {
         Schema::create('loans', function (Blueprint $table) {
             $table->id();
+            $table->string('loan_number');
             $table->bigInteger('user_id')->index();
             $table->decimal('amount',10,2);
             $table->integer('term');
             $table->timestamp('loan_date');
             $table->enum('repayment_frequency',['WEEKLY','MONTHLY'])->default('WEEKLY');
+            $table->enum('status',['PENDING','APPROVED','REJECTED'])->default('PENDING');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             //$table->foreign('user_id')->references('id')->on('users');

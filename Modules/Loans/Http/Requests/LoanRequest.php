@@ -18,6 +18,10 @@ class LoanRequest extends FormRequest
         if ($this->method() == 'POST' && Auth::user()->role != Roles::CUSTOMER) {
             return false;
         }
+
+        if ($this->method() == 'PATCH' && Auth::user()->role != Roles::ADMIN) {
+            return false;
+        }
         
         return true;
     }
@@ -31,17 +35,16 @@ class LoanRequest extends FormRequest
     {
         if ($this->method() == 'POST') {
             return [
-                'amount' => 'required|numeric',
+                'amount' => 'required|nullable|regex:/^\d+(\.\d{1,2})?$/|gt:1',
                 'term' => 'required|numeric',
-                'repayment_frequency' => 'required|in:WEEKLY,MONTHLY',
+                'loan_date' => 'required|date',
+                'loan_number' => 'required|unique:loans,loan_number',
             ];
         }
 
         if ($this->method() == 'PATCH') {
             return [
-                'first_name' => 'nullable',
-                'last_name' => 'nullable',
-                'role' => 'nullable|in:ADMIN,CUSTOMER'
+                'status' => 'required|in:APPROVED,REJECTED'
             ];
         }
 

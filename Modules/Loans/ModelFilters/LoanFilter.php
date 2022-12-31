@@ -29,4 +29,19 @@ class LoanFilter extends ModelFilter
         return $this->where('id', $filter);
     }
 
+    public function user_id($filter)
+    {
+        return $this->where('user_id', $filter);
+    }
+
+    public function status($filter)
+    {
+        return $this->where('status', $filter);
+    }
+
+    public function loan_number($filter)
+    {
+        return $this->where('loan_number', $filter);
+    }
+
 }
