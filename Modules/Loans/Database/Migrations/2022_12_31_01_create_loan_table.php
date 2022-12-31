@@ -21,10 +21,21 @@ class CreateLoanTable extends Migration
             $table->integer('term');
             $table->timestamp('loan_date');
             $table->enum('repayment_frequency',['WEEKLY','MONTHLY'])->default('WEEKLY');
-            $table->enum('status',['PENDING','APPROVED','REJECTED'])->default('PENDING');
+            $table->enum('status',['PENDING','APPROVED','REJECTED','PAID'])->default('PENDING');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             //$table->foreign('user_id')->references('id')->on('users');
+        });
+
+        Schema::create('scheduled_loan_repayments', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('loan_id')->index();
+            $table->decimal('amount',10,2);
+            $table->timestamp('payment_date');
+            $table->enum('status',['PENDING','PAID'])->default('PENDING');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
+            //$table->foreign('loan_id')->references('id')->on('loans');
         });
         
     }

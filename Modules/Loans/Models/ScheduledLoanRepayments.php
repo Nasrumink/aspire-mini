@@ -4,15 +4,14 @@ namespace Modules\Loans\Models;
 
 use EloquentFilter\Filterable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Modules\Loans\Models\ScheduledLoanRepayments;
 
-class Loan extends Authenticatable
+class ScheduledLoanRepayments extends Authenticatable
 {
     use Filterable;
 
     public function modelFilter()
     {
-        return $this->provideFilter(\Modules\Loans\ModelFilters\LoanFilter::class);
+       // return $this->provideFilter(\Modules\Loans\ModelFilters\LoanFilter::class);
     }
 
     /**
@@ -21,11 +20,9 @@ class Loan extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
-        'loan_date',
-        'loan_number',
         'amount',
-        'term'
+        //'loan_id',
+        'payment_date'
     ];
 
     /**
@@ -45,8 +42,4 @@ class Loan extends Authenticatable
      */
     protected $casts = [
     ];
-
-    function scheduled_repayments() {
-        return $this->hasMany(ScheduledLoanRepayments::class, 'loan_id', 'id');
-    }
 }

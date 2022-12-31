@@ -2,14 +2,14 @@
 
 namespace Modules\Loans\Services;
 
-use Modules\Loans\Models\{Loan};
+use Modules\Loans\Models\{Loan,ScheduledLoanRepayments};
 use Illuminate\Support\Facades\Auth;
 use Modules\Users\Enums\Roles;
-
+use DB;
 class LoanService
 {
     function getLoansByRole(array $arr) {
-        $loan = new Loan();
+        $loan = Loan::with('scheduled_repayments');
 
         if (Auth::user()->role == Roles::CUSTOMER) //Fetch loan details of logged in user if the role is not admin
             $loan = $loan->where('user_id', Auth::user()->id);
@@ -22,13 +22,29 @@ class LoanService
     }
 
     function createLoan(array $arr) : Loan {
-        return Loan::create([
-            'user_id' => Auth::user()->id,
-            'loan_date' => $arr['loan_date'],
-            'loan_number' => $arr['loan_number'],
-            'amount' => $arr['amount'],
-            'term' => $arr['term']
-        ]);
+        DB::beginTransaction();
+            //inserting loan
+            $loan = Loan::create([
+                'user_id' => Auth::user()->id,
+                'loan_date' => $arr['loan_date'],
+                'loan_number' => $arr['loan_number'],
+                'amount' => $arr['amount'],
+                'term' => $arr['term']
+            ]);
+
+            //preparing scheduled_repayments model for insertion
+            foreach($arr['scheduled_repayments'] as $k => $payments) {
+               $arr['temp'][$k] = new ScheduledLoanRepayments($payments);
+            }
+
+            //inserting scheduled_repayments 
+            $loan->scheduled_repayments()->saveMany($arr['temp']);
+
+            $loan->refresh();
+            $loan->load('scheduled_repayments');
+
+        DB::commit();
+        return $loan;
     }
 
     function updateLoan(array $arr, Loan $loan) : Loan {
