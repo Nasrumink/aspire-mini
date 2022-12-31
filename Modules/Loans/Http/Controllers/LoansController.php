@@ -12,19 +12,24 @@ class LoansController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * @param Request $request
      * @return Renderable
+     * @path GET /api/v1/loan
      */
-    public function index(Request $request) {
+    public function index(Request $request) 
+    {
         $loans =  (new LoanService)->getLoansByRole($request->all());
         return response()->json(["error" => false, "message" => "Success", "data" => $loans], 200);
     }
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
+     * @param LoanRequest $request
      * @return Renderable
+     * @path POST /api/v1/loan
      */
-    public function store(LoanRequest $request) {
+    public function store(LoanRequest $request) 
+    {
         $loan =  (new LoanService)->createLoan($request->all());
         return response()->json([
             'error' => false,
@@ -35,11 +40,13 @@ class LoansController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
+     * @param LoanRequest $request
+     * @param Loan $loan
      * @return Renderable
+     * @path PATCH /api/v1/loan
      */
-    public function update(Loan $loan, LoanRequest $request) {
+    public function update(Loan $loan, LoanRequest $request) 
+    {
         $loan =  (new LoanService)->updateLoan($request->all(), $loan);
         return response()->json([
             'error' => false,

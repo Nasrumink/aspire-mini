@@ -13,21 +13,24 @@ class UsersController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * To get the list of users.
-     * @param Request $request
+     * @param UserRequest $request
      * @return Renderable
+     * @path GET /api/v1/user
      */
-    public function index(UserRequest $request) {
+    public function index(UserRequest $request) 
+    {
         $users =  (new UserService)->getUsersByRole($request->all());
         return response()->json(["error" => false, "message" => "Success", "data" => $users], 200);
     }
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
+     * @param UserRequest $request
      * @return Renderable
+     * @path POST /api/v1/user
      */
-    public function store(UserRequest $request) {
+    public function store(UserRequest $request) 
+    {
         $user =  (new UserService)->createUser($request->all());
 
         return response()->json([
@@ -42,8 +45,10 @@ class UsersController extends Controller
      * @param UserRequest $request
      * @param User $user
      * @return Renderable
+     * @path PATCH /api/v1/user
      */
-    public function update(User $user,UserRequest $request) {
+    public function update(User $user,UserRequest $request) 
+    {
         $user =  (new UserService)->updateUser($request->all(), $user);
 
         return response()->json([
@@ -56,9 +61,12 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      * @param User $user
+     * @param UserRequest $UserRequest
      * @return Renderable
+     * @path DELETE /api/v1/user
      */
-    public function destroy(User $user,UserRequest $request) {
+    public function destroy(User $user,UserRequest $request) 
+    {
         $user->delete();
         return response()->json(["error" => false, "message" => "User deleted successfully"], 200);
     }
@@ -66,9 +74,11 @@ class UsersController extends Controller
     /**
      * Login The User
      * @param LoginRequest $request
-     * @return User
+     * @return token
+     * @path POST /api/v1/user/login
      */
-    public function loginUser(LoginRequest $request) {
+    public function loginUser(LoginRequest $request) 
+    {
         $token =  (new UserService)->authenticateLogin($request);
         return response()->json([
             'error' => false,

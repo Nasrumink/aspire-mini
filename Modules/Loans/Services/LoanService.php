@@ -8,7 +8,9 @@ use Modules\Users\Enums\Roles;
 use DB;
 class LoanService
 {
-    function getLoansByRole(array $arr) {
+    //To get the list of loans by role or by filter
+    function getLoansByRole(array $arr) 
+    {
         $loan = Loan::with('scheduled_repayments');
 
         if (Auth::user()->role == Roles::CUSTOMER) //Fetch loan details of logged in user if the role is not admin
@@ -21,7 +23,9 @@ class LoanService
         return $loan;
     }
 
-    function createLoan(array $arr) : Loan {
+    //To create a loan
+    function createLoan(array $arr) : Loan 
+    {
         DB::beginTransaction();
             //inserting loan
             $loan = Loan::create([
@@ -46,7 +50,9 @@ class LoanService
         return $loan;
     }
 
-    function updateLoan(array $arr, Loan $loan) : Loan {
+    //Updating loan status
+    function updateLoan(array $arr, Loan $loan) : Loan 
+    {
         if ($loan->status != 'PENDING')
             throw new \Exception('Loan status already updated');
 

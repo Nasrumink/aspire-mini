@@ -19,10 +19,6 @@ class RepaymentRequest extends FormRequest
             return false;
         }
 
-        if ($this->method() == 'PATCH' && Auth::user()->role != Roles::ADMIN) {
-            return false;
-        }
-        
         return true;
     }
 
@@ -37,12 +33,6 @@ class RepaymentRequest extends FormRequest
             return [
                 'amount' => 'required|nullable|regex:/^\d+(\.\d{1,2})?$/|gt:1',
                 'loan_id' => 'required|exists:loans,id,user_id,'.Auth::user()->id,
-            ];
-        }
-
-        if ($this->method() == 'PATCH') {
-            return [
-                'status' => 'required|in:APPROVED,REJECTED'
             ];
         }
 

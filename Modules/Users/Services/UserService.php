@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Hash;
 class UserService
 {
     // To get the list of users logged in role and by given filters
-    function getUsersByRole(array $arr) : object {
+    function getUsersByRole(array $arr) : object 
+    {
         $user = new User();
 
         if (Auth::user()->role == Roles::CUSTOMER) //Fetch user details of logged in user if the role is not admin
@@ -24,7 +25,8 @@ class UserService
     }
 
     //To create a user 
-    function createUser(array $arr) : User {
+    function createUser(array $arr) : User 
+    {
         return User::create([
             'password' => Hash::make($arr['password']),
             'first_name' => $arr['first_name'],
@@ -35,7 +37,8 @@ class UserService
     }
 
     //To update a user
-    function updateUser(array $arr, User $user) : User {
+    function updateUser(array $arr, User $user) : User 
+    {
         if (!empty(Auth::user()) && Auth::user()->role == Roles::CUSTOMER) //Update user details of logged in user if the role is not admin
             $user = $user->where('id', Auth::user()->id)->first();
 
@@ -47,7 +50,8 @@ class UserService
     }
 
     //To authenticate user login credentials
-    function authenticateLogin($request) : string {
+    function authenticateLogin($request) : string 
+    {
         if(!Auth::attempt($request->only(['email', 'password'])))
             throw new \Exception('Email & Password does not match with our record.');
 

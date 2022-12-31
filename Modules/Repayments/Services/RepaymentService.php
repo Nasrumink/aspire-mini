@@ -9,7 +9,8 @@ use Modules\Users\Enums\Roles;
 use DB;
 class RepaymentService
 {
-    function getRepaymentsByRole(array $arr) {
+    function getRepaymentsByRole(array $arr) : object
+    {
         $repayment = new Repayment();
 
         if (Auth::user()->role == Roles::CUSTOMER) //Fetch repayment details of logged in user if the role is not admin
@@ -22,7 +23,8 @@ class RepaymentService
         return $repayment;
     }
 
-    function createRepayment(array $arr)  {
+    function createRepayment(array $arr) : Loan
+    {
 
         DB::beginTransaction();
             $loan = Loan::with('first_scheduled_repayment')->where('id',$arr['loan_id'])->first();
@@ -54,7 +56,8 @@ class RepaymentService
         return $loan->refresh();
     }
 
-    function realiseLoanRepayment(Loan $loan, Repayment $repayment) {
+    function realiseLoanRepayment(Loan $loan, Repayment $repayment) 
+    {
         $loan->load('first_scheduled_repayment');
         if (empty($loan->first_scheduled_repayment)) {
             $loan->status = 'PAID';
