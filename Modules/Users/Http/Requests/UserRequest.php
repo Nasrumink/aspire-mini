@@ -15,7 +15,8 @@ class UserRequest extends FormRequest
      */
     public function authorize()
     {
-        if ($this->method() == 'DELETE' && Auth::user()->role != Roles::ADMIN) {
+        if ($this->method() == 'DELETE') {
+            if (Auth::user()->role != Roles::ADMIN)
                 return false;
         }
         
@@ -43,6 +44,7 @@ class UserRequest extends FormRequest
             return [
                 'first_name' => 'nullable',
                 'last_name' => 'nullable',
+                'email' => 'nullable|exists:users,email',
                 'role' => 'nullable|in:ADMIN,CUSTOMER'
             ];
         }

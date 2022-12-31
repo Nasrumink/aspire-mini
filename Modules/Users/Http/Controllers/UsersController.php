@@ -17,13 +17,8 @@ class UsersController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function index(UserRequest $request)
-    {
+    public function index(UserRequest $request) {
         $users =  (new UserService)->getUsersByRole($request->all());
-
-        if (count($users) < 1)
-            return response()->json(["error" => true, "message" => "No records found"], 401);
-
         return response()->json(["error" => false, "message" => "Success", "data" => $users], 200);
     }
 
@@ -32,8 +27,7 @@ class UsersController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(UserRequest $request)
-    {
+    public function store(UserRequest $request) {
         $user =  (new UserService)->createOrUpdateUser($request->all());
 
         return response()->json([
@@ -49,8 +43,7 @@ class UsersController extends Controller
      * @param User $user
      * @return Renderable
      */
-    public function update(User $user,UserRequest $request)
-    {
+    public function update(User $user,UserRequest $request) {
         $user =  (new UserService)->createOrUpdateUser($request->all(), $user);
 
         return response()->json([
@@ -65,8 +58,7 @@ class UsersController extends Controller
      * @param User $user
      * @return Renderable
      */
-    public function destroy(User $user,UserRequest $request)
-    {
+    public function destroy(User $user,UserRequest $request) {
         $user->delete();
         return response()->json(["error" => false, "message" => "User deleted successfully"], 200);
     }
@@ -76,15 +68,8 @@ class UsersController extends Controller
      * @param LoginRequest $request
      * @return User
      */
-    public function loginUser(LoginRequest $request)
-    {
+    public function loginUser(LoginRequest $request) {
         $token =  (new UserService)->authenticateLogin($request);
-        if (!$token)
-            return response()->json([
-                'error' => true,
-                'message' => 'Email & Password does not match with our record.',
-            ], 401);
-
         return response()->json([
             'error' => false,
             'message' => 'User Logged In Successfully',
