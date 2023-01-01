@@ -29,7 +29,7 @@ class RepaymentService
         DB::beginTransaction();
             $loan = Loan::with('first_scheduled_repayment')->where('id',$arr['loan_id'])->first();
             
-            if ($loan->status == 'PAID' || $loan->status == 'REJECTED')
+            if ($loan->status != 'APPROVED')
                 throw new \Exception('Repayment can be collected only for active loans.');
 
             if (empty($loan->first_scheduled_repayment))

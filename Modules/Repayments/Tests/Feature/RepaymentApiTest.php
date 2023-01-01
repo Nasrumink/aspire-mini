@@ -29,6 +29,7 @@ class RepaymentApiTest extends TestCase
         $arr['amount'] = ceil($loan->amount/3);
         $arr['loan_id'] = $loan->id;
 
+        //First Payment
         $response = $this->json('POST', 'api/v1/repayment',$arr,['HTTP_Authorization' => 'Bearer '.$customer['token']])
         ->assertStatus(Response::HTTP_OK)
         ->assertJsonStructure(
@@ -47,6 +48,53 @@ class RepaymentApiTest extends TestCase
                 ]
             ]
         );
+        $this->assertDatabaseHas('repayments', ['loan_id' => $loan->id, 'loan_amount_paid' => $arr['amount']]);
+
+        //Second Payment
+        $response = $this->json('POST', 'api/v1/repayment',$arr,['HTTP_Authorization' => 'Bearer '.$customer['token']])
+        ->assertStatus(Response::HTTP_OK)
+        ->assertJsonStructure(
+            [
+                'error',
+                "message",
+                "data" => [
+                    "seq_id",
+                    "id",
+                    "user_id",
+                    "amount",
+                    "term",
+                    "loan_date",
+                    "repayment_frequency",
+                    "status"
+                ]
+            ]
+        );
+        $this->assertDatabaseHas('repayments', ['loan_id' => $loan->id, 'loan_amount_paid' => $arr['amount']]);
+
+        //Third payment
+        $response = $this->json('POST', 'api/v1/repayment',$arr,['HTTP_Authorization' => 'Bearer '.$customer['token']])
+        ->assertStatus(Response::HTTP_OK)
+        ->assertJsonStructure(
+            [
+                'error',
+                "message",
+                "data" => [
+                    "seq_id",
+                    "id",
+                    "user_id",
+                    "amount",
+                    "term",
+                    "loan_date",
+                    "repayment_frequency",
+                    "status"
+                ]
+            ]
+        );
+        $this->assertDatabaseHas('repayments', ['loan_id' => $loan->id, 'loan_amount_paid' => $arr['amount']]);
+
+        $this->assertDatabaseHas('loans', ['id' => $loan->id, 'status' => 'PAID']);
+        $this->assertDatabaseHas('scheduled_loan_repayments', ['loan_id' => $loan->id, 'status' => 'PAID']);
+
         return json_decode($response->getContent());
     }
     public function createLoanApi($login)
