@@ -8,8 +8,17 @@ use Illuminate\Routing\Controller;
 use Modules\Loans\Models\Loan;
 use Modules\Loans\Http\Requests\{LoanRequest};
 use Modules\Loans\Services\LoanService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class LoansController extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        //$this->authorizeResource(Loan::class);
+    }
+
     /**
      * Display a listing of the resource.
      * @param Request $request

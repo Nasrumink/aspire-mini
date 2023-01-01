@@ -28,6 +28,6 @@ API sequence for LOANS MODEL
 -   Admin can approve loan. {{BASE_URL}}/api/v1/loan/{{loan_id}}
 -   Logged in user or admin can view loans. GET {{BASE_URL}}/api/v1/loan
 
-API sequence for LOANS MODEL 
+API sequence for REPAYMENTS MODEL 
 -   Customer can make repayments againts the loans. POST {{BASE_URL}}/api/v1/repayment
 -   Customer can view his repayments and admin can view any repayment. GET {{BASE_URL}}/api/v1/repayment
