@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Modules\Loans\Tests\Unit;
 
 use Tests\TestCase;
 use Modules\Users\Services\UserService;
@@ -9,7 +9,7 @@ use Faker\Factory;
 use Modules\Users\Models\{User};
 use Modules\Loans\Models\{Loan};
 use Illuminate\Http\Request;
-use Tests\Unit\UserTest;
+use Modules\Users\Tests\Unit\UserTest;
 use Illuminate\Support\Facades\Auth;
 class LoanTest extends TestCase
 {

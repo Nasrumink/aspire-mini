@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Modules\Users\Tests\Unit;
 
 use Tests\TestCase;
 use Modules\Users\Services\UserService;
@@ -48,7 +48,7 @@ class UserTest extends TestCase
             $arr['last_name'] = 'Updated '.$user->last_name;
             (new UserService)->updateUser($arr, $user);
             if ($assert)
-                $this->assertDatabaseHas('users', ['first_name' => $arr['first_name'], 'last_name' => $arr['last_name']]);
+                $this->assertDatabaseHas('users', ['id' => $user->id,'first_name' => $arr['first_name'], 'last_name' => $arr['last_name']]);
         }
     }
 

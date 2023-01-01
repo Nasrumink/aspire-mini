@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Modules\Repayments\Tests\Unit;
 
 use Tests\TestCase;
 use Modules\Users\Services\UserService;
@@ -11,7 +11,8 @@ use Modules\Users\Models\{User};
 use Modules\Repayments\Models\{Repayment};
 use Modules\Loans\Models\{Loan};
 use Illuminate\Http\Request;
-use Tests\Unit\{UserTest,LoanTest};
+use Modules\Users\Tests\Unit\UserTest;
+use Modules\Loans\Tests\Unit\LoanTest;
 use Illuminate\Support\Facades\Auth;
 class RepaymentTest extends TestCase
 {
