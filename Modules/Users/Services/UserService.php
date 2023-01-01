@@ -13,7 +13,7 @@ class UserService
     {
         $user = new User();
 
-        if (Auth::user()->role == Roles::CUSTOMER) //Fetch user details of logged in user if the role is not admin
+        if (!empty(Auth::user()) && Auth::user()->role == Roles::CUSTOMER) //Fetch user details of logged in user if the role is not admin
             $user = $user->where('id', Auth::user()->id);
     
         $user = $user->filter($arr)->orderBy('id','desc')->get();

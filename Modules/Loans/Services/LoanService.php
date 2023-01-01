@@ -13,7 +13,7 @@ class LoanService
     {
         $loan = Loan::with('scheduled_repayments');
 
-        if (Auth::user()->role == Roles::CUSTOMER) //Fetch loan details of logged in user if the role is not admin
+        if (!empty(Auth::user()) && Auth::user()->role == Roles::CUSTOMER) //Fetch loan details of logged in user if the role is not admin
             $loan = $loan->where('user_id', Auth::user()->id);
     
         $loan = $loan->filter($arr)->get();
@@ -29,7 +29,7 @@ class LoanService
         DB::beginTransaction();
             //inserting loan
             $loan = Loan::create([
-                'user_id' => Auth::user()->id,
+                'user_id' => isset($arr['user_id']) ? $arr['user_id'] : Auth::user()->id,
                 'loan_date' => $arr['loan_date'],
                 'amount' => $arr['amount'],
                 'term' => $arr['term']

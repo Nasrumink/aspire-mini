@@ -13,7 +13,7 @@ class RepaymentService
     {
         $repayment = new Repayment();
 
-        if (Auth::user()->role == Roles::CUSTOMER) //Fetch repayment details of logged in user if the role is not admin
+        if (!empty(Auth::user()) && Auth::user()->role == Roles::CUSTOMER) //Fetch repayment details of logged in user if the role is not admin
             $repayment = $repayment->where('user_id', Auth::user()->id);
     
         $repayment = $repayment->filter($arr)->get();
