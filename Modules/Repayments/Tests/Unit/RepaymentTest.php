@@ -16,7 +16,7 @@ use Modules\Loans\Tests\Unit\LoanTest;
 use Illuminate\Support\Facades\Auth;
 class RepaymentTest extends TestCase
 {
-    public function testCreateLoanRepayment($assert = true)
+    public function testCreateLoanRepayment()
     {
         $loan = (new LoanTest)->testCreateLoan(false);
         
@@ -28,11 +28,8 @@ class RepaymentTest extends TestCase
         $loan = (new RepaymentService)->createRepayment($arr); // second payment
         $loan = (new RepaymentService)->createRepayment($arr); // third payment
 
-        if($assert)
-            $this->assertNotEmpty($loan);
-
-        if($assert)
-            $this->assertDatabaseHas('repayments', ['loan_id' => $loan->id, 'loan_amount_paid' => $arr['amount']]);
+        $this->assertNotEmpty($loan);
+        $this->assertDatabaseHas('repayments', ['loan_id' => $loan->id, 'loan_amount_paid' => $arr['amount']]);
 
         return $arr;
     }

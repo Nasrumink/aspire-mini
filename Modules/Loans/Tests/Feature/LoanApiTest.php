@@ -1,20 +1,28 @@
 <?php
 
-namespace Modules\Users\Tests\Feature;
+namespace Modules\Loans\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Route;
 use Modules\Users\Models\{User};
-use Modules\Users\Tests\Unit\UserTest;
+use Modules\Users\Tests\Feature\UserApiTest;
 use Illuminate\Http\Response;
-class UserApiTest extends TestCase
+class LoanApiTest extends TestCase
 {
-    public function testCustomerUserCreateApi()
+    public function testExample()
     {
-        $arr = (new UserTest)->prepareUserParams('CUSTOMER');
-        $response = $this->json('POST', 'api/v1/user', $arr);
-        $response->assertStatus(Response::HTTP_OK)
+        $this->assertTrue(true);
+    }
+    /* public function testCreateLoanApi()
+    {
+        
+
+        $arr = (new UserApiTest)->testCustomerLoginApi(false);
+        dd($arr);
+
+        $response = $this->json('POST', 'api/v1/user', $arr)
+        ->assertStatus(Response::HTTP_OK)
         ->assertJsonStructure(
             [
                 'error',
@@ -28,6 +36,7 @@ class UserApiTest extends TestCase
                 ]
             ]
         );
+            
         $this->assertDatabaseHas('users', ['email' => $arr['email']]);
 
         return $arr;
@@ -59,9 +68,9 @@ class UserApiTest extends TestCase
 
     public function testCustomerLoginApi() 
     {
-        $arr = $this->testCustomerUserCreateApi(false);
-        $response = $this->json('POST', 'api/v1/user/login', $arr);
-        $response->assertStatus(Response::HTTP_OK)
+        $arr = $this->testCustomerUserCreateApi();
+        $response = $this->json('POST', 'api/v1/user/login', $arr)
+        ->assertStatus(Response::HTTP_OK)
         ->assertJsonStructure(
             [
                 'error',
@@ -151,5 +160,5 @@ class UserApiTest extends TestCase
                 "message"
             ]
         );       
-    }
+    } */
 }

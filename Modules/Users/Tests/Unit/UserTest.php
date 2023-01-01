@@ -9,23 +9,22 @@ use Modules\Users\Models\{User};
 use Illuminate\Http\Request;
 class UserTest extends TestCase
 {
-    public function testCreateCustomer($assert = true)
+    public function testCreateCustomer()
     {
         //Create Customer user
         $arr = $this->prepareUserParams('CUSTOMER');
         $user = (new UserService)->createUser($arr);
-        if ($assert)
-            $this->assertDatabaseHas('users', ['email' => $arr['email']]);
+        $this->refreshApplication();
+        $this->assertDatabaseHas('users', ['email' => $arr['email']]);
         return $arr;
     }
 
-    public function testCreateAdmin($assert = true)
+    public function testCreateAdmin()
     {
         //Create Admin User
         $arr = $this->prepareUserParams('ADMIN');
         $user = (new UserService)->createUser($arr);
-        if ($assert)
-            $this->assertDatabaseHas('users', ['email' => $arr['email']]);
+        $this->assertDatabaseHas('users', ['email' => $arr['email']]);
         return $arr;
     }
 
@@ -40,27 +39,29 @@ class UserTest extends TestCase
         return $arr;
     }
 
-    function testUpdateUser($assert = true) 
+    function testUpdateUser() 
     {
         $user = User::latest()->first();
         if (!empty($user)) {
             $arr['first_name'] = 'Updated '.$user->first_name;
             $arr['last_name'] = 'Updated '.$user->last_name;
             (new UserService)->updateUser($arr, $user);
-            if ($assert)
-                $this->assertDatabaseHas('users', ['id' => $user->id,'first_name' => $arr['first_name'], 'last_name' => $arr['last_name']]);
+            $this->assertDatabaseHas('users', ['id' => $user->id,'first_name' => $arr['first_name'], 'last_name' => $arr['last_name']]);
+        } else {
+            $this->assertTrue(true);
         }
     }
 
-    function testAuthenticateLogin($assert = true)
+    function testAuthenticateLogin()
     {
         $arr = $this->testCreateCustomer(false);
         $request = new Request();
         $request->merge(["email"=>$arr['email']]);
         $request->merge(["password"=>$arr['password']]);
         $token = (new UserService)->authenticateLogin($request);
-        if ($assert)
-            $this->assertNotEmpty($token);
+        $this->refreshApplication();
+        $this->assertNotEmpty($token);
+        return $arr;
     }
 
     function testGetUsers() {
