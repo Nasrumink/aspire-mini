@@ -41,7 +41,14 @@ class Handler extends ExceptionHandler
                 return response()->json([
                     'error' => true,
                     'message' => $e->errorInfo[count($e->errorInfo) - 1]
-                ], 404);
+                ], 422);
+            }
+
+            if(!$e instanceof \Illuminate\Validation\ValidationException && $e->getMessage() == '') {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Something went wrong'
+                ], 422);
             }
 
             //Error handling for all non validation Exceptions
@@ -49,7 +56,7 @@ class Handler extends ExceptionHandler
                 return response()->json([
                     'error' => true,
                     'message' => $e->getMessage()
-                ], 404);
+                ], 422);
             }
         });
 
