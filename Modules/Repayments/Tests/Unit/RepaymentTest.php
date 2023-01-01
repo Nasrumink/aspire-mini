@@ -18,7 +18,7 @@ class RepaymentTest extends TestCase
 {
     public function testCreateLoanRepayment()
     {
-        $loan = (new LoanTest)->testCreateLoan(false);
+        $loan = (new LoanTest)->testCreateLoan();
         
         $arr['amount'] = ceil($loan->amount/3);
         $arr['loan_id'] =$loan->id;

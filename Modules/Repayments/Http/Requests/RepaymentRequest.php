@@ -32,7 +32,7 @@ class RepaymentRequest extends FormRequest
         if ($this->method() == 'POST') {
             return [
                 'amount' => 'required|nullable|regex:/^\d+(\.\d{1,2})?$/|gt:1',
-                'loan_id' => 'required|exists:loans,id,user_id,'.Auth::user()->id,
+                'loan_id' => 'required|exists:loans,id,user_id,'.Auth::user()->getAttributes()['id'],
             ];
         }
 

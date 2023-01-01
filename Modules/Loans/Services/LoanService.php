@@ -33,7 +33,7 @@ class LoanService
         DB::beginTransaction();
             //inserting loan
             $loan = Loan::create([
-                'user_id' => isset($arr['user_id']) ? $arr['user_id'] : Auth::user()->id,
+                'user_id' => isset($arr['user_id']) ? $arr['user_id'] : Auth::user()->getAttributes()['id'],
                 'loan_date' => $arr['loan_date'],
                 'amount' => $arr['amount'],
                 'term' => $arr['term']

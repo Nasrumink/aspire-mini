@@ -14,7 +14,7 @@ class UserService
         $user = new User();
 
         if (!empty(Auth::user()) && Auth::user()->role == Roles::CUSTOMER) //Fetch user details of logged in user if the role is not admin
-            $user = $user->where('id', Auth::user()->id);
+            $user = $user->where('id', Auth::user()->getAttributes()['id']);
     
         $user = $user->filter($arr)->orderBy('id','desc')->get();
 
@@ -40,7 +40,7 @@ class UserService
     function updateUser(array $arr, User $user) : User 
     {
         if (!empty(Auth::user()) && Auth::user()->role == Roles::CUSTOMER) //Update user details of logged in user if the role is not admin
-            $user = $user->where('id', Auth::user()->id)->first();
+            $user = $user->where('id', Auth::user()->getAttributes()['id'])->first();
 
         $user->first_name = isset($arr['first_name']) ? $arr['first_name'] : $user->first_name;
         $user->last_name = isset($arr['last_name']) ? $arr['last_name'] : $user->last_name;

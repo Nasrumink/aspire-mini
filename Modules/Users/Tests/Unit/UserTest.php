@@ -54,7 +54,7 @@ class UserTest extends TestCase
 
     function testAuthenticateLogin()
     {
-        $arr = $this->testCreateCustomer(false);
+        $arr = $this->testCreateCustomer();
         $request = new Request();
         $request->merge(["email"=>$arr['email']]);
         $request->merge(["password"=>$arr['password']]);

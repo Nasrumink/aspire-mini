@@ -1,21 +1,56 @@
 <?php
 
-namespace Modules\Loans\Tests\Feature;
+namespace Modules\Repayments\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Illuminate\Support\Facades\Route;
 use Modules\Users\Models\{User};
 use Modules\Users\Tests\Feature\UserApiTest;
 use Modules\Loans\Tests\Unit\LoanTest;
 use Modules\Users\Tests\Unit\UserTest;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-class LoanApiTest extends TestCase
+
+class RepaymentApiTest extends TestCase
 {
-    public function testCreateLoanApi()
+
+    public function testCreateRepaymentApi()
     {
-        $login = $this->customerLoginApi();
+        $customer = $this->customerLoginApi();
+        $this->refreshApplication();
+        $loan = $this->createLoanApi($customer);
+        $this->refreshApplication();
+        $admin = $this->adminLoginApi();
+        $this->refreshApplication();
+        $this->approveLoanApi($admin,$loan);
+        $this->refreshApplication();
+        $customer = $this->loginUser($customer);
+
+        $arr['amount'] = ceil($loan->amount/3);
+        $arr['loan_id'] = $loan->id;
+
+        $response = $this->json('POST', 'api/v1/repayment',$arr,['HTTP_Authorization' => 'Bearer '.$customer['token']])
+        ->assertStatus(Response::HTTP_OK)
+        ->assertJsonStructure(
+            [
+                'error',
+                "message",
+                "data" => [
+                    "seq_id",
+                    "id",
+                    "user_id",
+                    "amount",
+                    "term",
+                    "loan_date",
+                    "repayment_frequency",
+                    "status"
+                ]
+            ]
+        );
+        return json_decode($response->getContent());
+    }
+    public function createLoanApi($login)
+    {
         $arr = (new LoanTest)->prepareLoanParams(['email' => $login['email']]);
         $response = $this->json('POST', 'api/v1/loan',$arr,['HTTP_Authorization' => 'Bearer '.$login['token']])
         ->assertStatus(Response::HTTP_OK)
@@ -48,11 +83,8 @@ class LoanApiTest extends TestCase
         return json_decode($response->getContent())->data;
     }
 
-    public function testApproveLoanApi()
+    public function approveLoanApi($login,$loan)
     {
-        $loan = $this->testCreateLoanApi();
-        $this->refreshApplication();
-        $login = $this->adminLoginApi();
         $arr['status'] = 'APPROVED';
         $response = $this->json('PATCH', 'api/v1/loan/'.$loan->id,$arr,['HTTP_Authorization' => 'Bearer '.$login['token']])
         ->assertStatus(Response::HTTP_OK)
@@ -75,37 +107,7 @@ class LoanApiTest extends TestCase
 
         $this->assertDatabaseHas('loans', ['id' => $loan->id, 'status' => 'APPROVED']);
 
-        return json_decode($response->getContent())->data;
-    }
-
-    public function testGetLoanApi()
-    {
-        $loan = $this->testCreateLoanApi();
-        $this->refreshApplication();
-        $login = $this->adminLoginApi();
-        $response = $this->json('GET', 'api/v1/loan',['HTTP_Authorization' => 'Bearer '.$login['token']])
-        ->assertStatus(Response::HTTP_OK)
-        ->assertJsonStructure(
-            [
-                'error',
-                "message",
-                "data" => [
-                    '*' =>  [
-                        "seq_id",
-                        "id",
-                        "user_id",
-                        "amount",
-                        "term",
-                        "loan_date",
-                        "repayment_frequency",
-                        "status",
-                        "scheduled_repayments"
-                    ]
-                ]
-            ]
-        );
-
-        return json_decode($response->getContent())->data;
+        return $loan;
     }
 
     public function customerUserCreateApi()
@@ -184,5 +186,17 @@ class LoanApiTest extends TestCase
         return $arr;
     }
 
-
+    public function loginUser($arr) {
+        $response = $this->json('POST', 'api/v1/user/login', $arr);
+        $response->assertStatus(Response::HTTP_OK)
+        ->assertJsonStructure(
+            [
+                'error',
+                "message",
+                "token"
+            ]
+        );
+        $arr['token'] = json_decode($response->getContent())->token;
+        return $arr;
+    }
 }

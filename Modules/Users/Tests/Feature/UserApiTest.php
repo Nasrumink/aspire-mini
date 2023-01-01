@@ -59,7 +59,7 @@ class UserApiTest extends TestCase
 
     public function testCustomerLoginApi() 
     {
-        $arr = $this->testCustomerUserCreateApi(false);
+        $arr = $this->testCustomerUserCreateApi();
         $response = $this->json('POST', 'api/v1/user/login', $arr);
         $response->assertStatus(Response::HTTP_OK)
         ->assertJsonStructure(
