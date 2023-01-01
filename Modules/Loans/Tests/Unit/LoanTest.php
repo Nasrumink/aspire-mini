@@ -37,9 +37,9 @@ class LoanTest extends TestCase
         $arr['amount'] = $amt;
         $arr['term'] = $faker->randomDigit;
         $arr['scheduled_repayments'] = [
-            ["amount" =>  $amt/3 , 'payment_date' => date('Y-m-d', strtotime(now(). ' + 6 days'))],
-            ["amount" =>  $amt/3 , 'payment_date' => date('Y-m-d', strtotime(now(). ' + 12 days'))],
-            ["amount" =>  $amt/3 , 'payment_date' => date('Y-m-d', strtotime(now(). ' + 18 days'))]
+            ["amount" =>  ceil($amt/3) , 'payment_date' => date('Y-m-d', strtotime(now(). ' + 6 days'))],
+            ["amount" =>  ceil($amt/3) , 'payment_date' => date('Y-m-d', strtotime(now(). ' + 12 days'))],
+            ["amount" =>  ceil($amt/3) , 'payment_date' => date('Y-m-d', strtotime(now(). ' + 18 days'))]
         ];
         return $arr;
     }

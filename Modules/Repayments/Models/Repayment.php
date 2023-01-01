@@ -3,9 +3,9 @@
 namespace Modules\Repayments\Models;
 
 use EloquentFilter\Filterable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 
-class Repayment extends Authenticatable
+class Repayment extends Model
 {
     use Filterable;
     protected $primaryKey = 'id';

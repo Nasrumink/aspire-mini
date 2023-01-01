@@ -12,9 +12,8 @@ class LoanService
     function getLoansByRole(array $arr) 
     {
         $loan = Loan::with('scheduled_repayments');
-
         if (!empty(Auth::user()) && Auth::user()->role == Roles::CUSTOMER) //Fetch loan details of logged in user if the role is not admin
-            $loan = $loan->where('user_id', Auth::user()->id);
+            $loan = $loan->where('user_id', Auth::user()->getAttributes()['id']);
     
         $loan = $loan->filter($arr)->get();
 

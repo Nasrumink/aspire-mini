@@ -15,7 +15,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        Loan::class => LoanPolicy::class,
+        //Loan::class => LoanPolicy::class,
     ];
 
     /**
@@ -25,7 +25,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerPolicies();
+        //$this->registerPolicies();
 
         //
     }

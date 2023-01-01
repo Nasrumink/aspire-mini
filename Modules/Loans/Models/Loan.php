@@ -3,10 +3,10 @@
 namespace Modules\Loans\Models;
 
 use EloquentFilter\Filterable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Modules\Loans\Models\ScheduledLoanRepayments;
+use Illuminate\Database\Eloquent\Model;
 
-class Loan extends Authenticatable
+class Loan extends model
 {
     use Filterable;
     protected $primaryKey = 'id';

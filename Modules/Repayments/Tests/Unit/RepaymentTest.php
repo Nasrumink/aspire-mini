@@ -20,7 +20,7 @@ class RepaymentTest extends TestCase
     {
         $loan = (new LoanTest)->testCreateLoan(false);
         
-        $arr['amount'] = round($loan->amount/3,2);
+        $arr['amount'] = ceil($loan->amount/3);
         $arr['loan_id'] =$loan->id;
 
         //Create Loan repayment
