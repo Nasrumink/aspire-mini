@@ -10,3 +10,6 @@ Steps to run the project.
 -   Create .ENV file and configure database credentials
 -   php artisan migrate:fresh
 -   php artisan test
+-   Create below two ENV variables in postman to run the APIs
+-   BASE_URL = http://127.0.0.1/aspire-mini/public
+-   token = ''
