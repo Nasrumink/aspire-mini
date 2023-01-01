@@ -26,6 +26,11 @@ class LoanService
     //To create a loan
     function createLoan(array $arr) : Loan 
     {
+        $sr_amt = array_sum(array_column($arr['scheduled_repayments'],'amount'));
+        if ($sr_amt < $arr['amount']) {
+            throw new \Exception('Sum of scheduled repayment amount does not match with the loan amount.');
+        }
+
         DB::beginTransaction();
             //inserting loan
             $loan = Loan::create([
