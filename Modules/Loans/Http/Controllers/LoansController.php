@@ -14,11 +14,6 @@ class LoansController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct()
-    {
-        //$this->authorizeResource(Loan::class);
-    }
-
     /**
      * Display a listing of the resource.
      * @param Request $request
@@ -29,6 +24,18 @@ class LoansController extends Controller
     {
         $loans =  (new LoanService)->getLoansByRole($request->all());
         return response()->json(["error" => false, "message" => "Success", "data" => $loans], 200);
+    }
+
+    /**
+     * View of the resource.
+     * @param Loan $loan
+     * @return Renderable
+     * @path GET /api/v1/loan
+     */
+    public function show(Loan $loan) 
+    {
+        $this->authorize($loan,Auth::user());
+        return response()->json(["error" => false, "message" => "Success", "data" => $loan], 200);
     }
 
     /**

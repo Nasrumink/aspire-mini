@@ -18,8 +18,7 @@ class LoanPolicy
      */
     public function viewAny(User $user,Loan $loan)
     {
-        //dd($loan->user_id);
-        return $user->id == $loan->user_id;
+        return true;
     }
 
     /**
